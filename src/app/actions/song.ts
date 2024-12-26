@@ -1,11 +1,12 @@
 'use server'
 
+import spotifySession from "../spotifySession";
+
 export const search = async () => {
   const yearRange = '1970-1979';
-  const bearerToken = 'not-valid'
   const req = await fetch(`https://api.spotify.com/v1/search?q=year:${yearRange}&type=track&market=FI&limit=1`, {
     headers: {
-      'Authorization': `Bearer ${bearerToken}`
+      'Authorization': await spotifySession.getBearerTokenHeader()
     }
   });
   const jsonRes = await req.json();
