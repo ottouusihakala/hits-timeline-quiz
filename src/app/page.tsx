@@ -1,12 +1,16 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { search } from "./actions/song"
+import { searchTracks } from "./actions/tracks"
+import SongQRCode from "./components/qr";
 
-export default function Home() {
-  async function searchSong() {
+export default async function Home() {
+  async function getTracks() {
     'use server'
-    search()
+    return (await searchTracks()).tracks.items;
   }
+
+  const tracks = await getTracks();
+  const firstTrackUrl = tracks.at(0)?.external_urls.spotify;
 
   return (
     <div className={styles.page}>
@@ -50,13 +54,11 @@ export default function Home() {
           >
             Read our docs
           </a>
-          <button
-            onClick={searchSong}
-            className={styles.secondary}
-          >
-            Search for song
-          </button>
         </div>
+
+        {firstTrackUrl && (
+          <SongQRCode url={firstTrackUrl} />
+        )}
       </main>
       <footer className={styles.footer}>
         <a
