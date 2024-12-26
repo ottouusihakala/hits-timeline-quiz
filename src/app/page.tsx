@@ -1,7 +1,13 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { search } from "./actions/song"
 
 export default function Home() {
+  async function searchSong() {
+    'use server'
+    search()
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -44,6 +50,12 @@ export default function Home() {
           >
             Read our docs
           </a>
+          <button
+            onClick={searchSong}
+            className={styles.secondary}
+          >
+            Search for song
+          </button>
         </div>
       </main>
       <footer className={styles.footer}>
