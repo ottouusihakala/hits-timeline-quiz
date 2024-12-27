@@ -1,3 +1,20 @@
+# Hit Song Timeline Quiz tools
+
+App for playing a game where you have to guess the year the song was released on, and optionally the artist and song name.
+
+For now, there are only tools.
+
+## Backlog
+
+### High Priority
+
+* Generate "cards", QR code on one side and song info on the other side
+* QR code leads to a page in the app, that has a countdown, which redirects or switches to Spotify once countdown runs out
+
+### Nice-to-have
+
+* Play game on app with others
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
