@@ -4,7 +4,15 @@ import requests
 import os
 from base64 import b64encode
 
-SPOTIFY_USER_NAME = "spotify"
+FILTR_US_80S_HITS_TOP_100_PLAYLIST_ID = "19PgP2QSGPcm6Ve8VhbtpG"
+FILTR_US_70S_HITS_TOP_100_PLAYLIST_ID = "5KmBulox9POMt9hOt3VV1x"
+# Last checked (2024-12-27) the following playlist contained 256 tracks
+FILTR_SWE_60S_HITS_PLAYLIST_ID = "4ZuX2YvKAlym0a8VozqV1U"
+FILTR_US_90S_HITS_TOP_100_PLAYLIST_ID = "3C64V048fGyQfCjmu9TIGA"
+# Has only 97 tracks (2024-12-27)
+FILTR_00S_HITS_PLAYLIST_ID = "1U3x51O0LQ4TtaD5CgxuGL"
+# Has 538 tracks (2024-12-27)
+BANGERS_2010S_PLAYLIST_ID = "357fWKFTiDhpt9C69CMG4q"
 
 load_dotenv()
 
@@ -23,30 +31,8 @@ auth_token_res = requests.post(
 
 auth_token = auth_token_res.json()
 
-limit = 100
-
-spotify_user_playlists_res = requests.get(
-    url="https://api.spotify.com/v1/users/" + SPOTIFY_USER_NAME + "/playlists?limit=" + str(limit),
-    headers={"Authorization": "Bearer " + auth_token.get("access_token")},
-)
-
-spotify_user_playlists = spotify_user_playlists_res.json()
-
-playlist_total_amount = spotify_user_playlists.get("total")
-
-print("playlist_total_amount ", playlist_total_amount)
-
-playlists_ids = []
-
-for playlist in spotify_user_playlists.get("items"):
-    print("playlist name ", playlist.get("name"), playlist.get("external_urls").get("spotify"))
-
-pageAmount = playlist_total_amount / limit
-
-print("pageAmount", pageAmount)
-
 tracks_res = requests.get(
-    url="https://api.spotify.com/v1/playlists/0NfjMqrzcGKVsbYZmhf4Md/tracks",
+    url="https://api.spotify.com/v1/playlists/19PgP2QSGPcm6Ve8VhbtpG/tracks",
     headers={"Authorization": "Bearer " + auth_token.get("access_token")},
 )
 
