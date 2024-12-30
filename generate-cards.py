@@ -1,4 +1,4 @@
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 import qrcode
 import requests
 import os
@@ -27,10 +27,9 @@ playlist_ids = [
 
 load_dotenv()
 
+# Authenticate, get an access token from the auth endpoint to run the following requests
 client_creds = os.environ.get("SPOTIFY_CLIENT_ID") + ":" + os.environ.get("SPOTIFY_CLIENT_SECRET")
-
 client_creds_base64 = b64encode(client_creds.encode("utf-8")).decode("utf-8")
-
 auth_token_res = requests.post(
     url="https://accounts.spotify.com/api/token",
     headers={
@@ -39,9 +38,9 @@ auth_token_res = requests.post(
     },
     data={"grant_type": "client_credentials"},
 )
-
 auth_token = auth_token_res.json()
 
+# Initial collection for collecting tracks into, by grouping them by decade
 tracks_by_decades = {
     "60s": [],
     "70s": [],
@@ -51,6 +50,7 @@ tracks_by_decades = {
     "2010s": []
 }
 
+# Limiting filter for fields, we don't need all the data from the Spotify API
 fields_filter = "items(id,track(name,album(name,release_date,release_date_precision),artists(name),external_urls(spotify))),total"
 
 for playlist_id in playlist_ids:
@@ -61,8 +61,10 @@ for playlist_id in playlist_ids:
     tracks_json = tracks_res.json()
     tracks_amount = tracks_json.get("total")
     tracks = tracks_json.get("items")
+    # Limit amount of tracks, if there are more than 100 tracks in the playlist
     if tracks_amount > 100:
         tracks = tracks[0:100]
+    # Group tracks from the playlist by release decade
     for track in tracks:
         release_year = int(track.get("track").get("album").get("release_date")[0:4])
         if release_year >= 1960 and release_year < 1970:
@@ -78,17 +80,6 @@ for playlist_id in playlist_ids:
         elif release_year >= 2010 and release_year < 2020:
             tracks_by_decades["2010s"].append(track)
 
+# Write tracks JSON to file
 with open("tracks.json", "w") as f:
     json.dump(tracks_by_decades, f)
-
-# 2 inches, 300 pixels per inch, 2 * 300
-card_size_x = 2 * 300
-card_size_y = 3.5 * 300
-
-for decade in tracks_by_decades:
-    for track in decade:
-        card = Image.new(mode="RGBA", size=(card_size_x, card_size_y), color=0)
-        qr_code = qrcode.make(track.get("track").get("external_urls").get("spotify"))
-        card.paste(qr_code)
-        card.show()
-    
