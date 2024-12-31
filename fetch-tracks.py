@@ -1,9 +1,7 @@
 from dotenv import load_dotenv
-import qrcode
 import requests
 import os
 import json
-from PIL import Image
 from base64 import b64encode
 
 FILTR_US_80S_HITS_TOP_100_PLAYLIST_ID = "19PgP2QSGPcm6Ve8VhbtpG"
@@ -24,6 +22,8 @@ playlist_ids = [
     FILTR_00S_HITS_PLAYLIST_ID,
     BANGERS_2010S_PLAYLIST_ID
 ]
+
+TRACK_MAX_COUNT_PER_PLAYLIST = 100
 
 load_dotenv()
 
@@ -62,8 +62,8 @@ for playlist_id in playlist_ids:
     tracks_amount = tracks_json.get("total")
     tracks = tracks_json.get("items")
     # Limit amount of tracks, if there are more than 100 tracks in the playlist
-    if tracks_amount > 100:
-        tracks = tracks[0:100]
+    if tracks_amount > TRACK_MAX_COUNT_PER_PLAYLIST:
+        tracks = tracks[0:TRACK_MAX_COUNT_PER_PLAYLIST]
     # Group tracks from the playlist by release decade
     for track in tracks:
         release_year = int(track.get("track").get("album").get("release_date")[0:4])
