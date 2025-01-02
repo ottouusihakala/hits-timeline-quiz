@@ -1,6 +1,6 @@
 import math
 import qrcode
-from PIL import Image, ImageDraw2, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 track = {
     "track": {
