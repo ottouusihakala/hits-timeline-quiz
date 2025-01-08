@@ -4,17 +4,20 @@ App for playing a game where you have to guess the year the song was released on
 
 For now, there are only tools.
 
-To run Next.js app, that shows a QR code for a open.spotify url for a random track on Hitster FI playlist.
+To process a QR code from an image file (PNG or JPEG), display a timer, and open the spotify url from the QR code in a new tab, use the Next.js app.
 
-To generate QR codes for around 500 tracks across 5 playlists covering several decades of music, run `generate-cards.py` Python script.
+To generate QR codes for around 500 tracks across 5 playlists covering several decades of music, run `fetch-tracks.py` Python script to get track information from Spotify, and `draw-cards.py` to render image file with all the cards with QR codes.
 
-## Running `generate-cards.py` Python script
+## Running `fetch-tracks.py` Python script
 
 Install pre-requisites:
 * [`python-dotenv`](https://pypi.org/project/python-dotenv/)
-* [`qrcode`](https://github.com/lincolnloop/python-qrcode)
 * [`requests`](https://docs.python-requests.org/en/latest/index.html)
-* [`Pillow](https://python-pillow.github.io/)
+
+Or run
+```bash
+pip install -r requirements.txt
+```
 
 Create a Spotify Developer account, create a Spotify client, and get Client ID and Client Secret.
 
@@ -24,18 +27,61 @@ SPOTIFY_CLIENT_ID=[Client ID here]
 SPOTIFY_CLIENT_SECRET=[Client Secret here]
 ```
 
-Run `generate-cards.py` with Python:
+Run `fetch-tracks.py` with Python:
 ```bash
-python generate-cards.py
+python fetch-tracks.py
 ```
+
+## Running `draw-cards.py` Python script
+
+Install pre-requisites
+* [`qrcode`](https://github.com/lincolnloop/python-qrcode)
+* [`Pillow](https://python-pillow.github.io/)
+
+Or run
+```bash
+pip install -r requirements.txt
+```
+
+Make sure you have `tracks.json` created, with track information from Spotify.
+
+Run `draw-cards.py` with Python:
+```bash
+python draw-cards.py
+```
+
+## To run QR card processing web app
+
+### Development environment
+
+Install npm packages
+```bash
+npm install
+```
+
+Run app in development mode
+```bash
+npm run dev
+```
+
+### Production
+
+Not implemented yet.
 
 ## Backlog
 
+* Consider creating a mobile app for the QR code redirect
+  * Distribution of app can be an issue, application package distribution requires approval from application store front or technical know-how of installing unsigned packages
+
 ### High Priority
 
-* Generate "cards", QR code on one side and song info on the other side
-  * Fit cards on A4 sheets (300 ppi)
-* QR code leads to a page in the app, that has a countdown, which redirects or switches to Spotify once countdown runs out
+* Fit cards on A4 sheets at 300 ppi
+* Test QR code parsed URL redirect to Spotify
+  * On desktop
+    * Tilted images work
+    * Cannot get Spotify desktop app to open automatically upon opening the url
+  * On mobile (most likely requires authentication to prevent unwanted users to site/webapp)
+* Authentication, limit access to QR code upload to specific individuals
 
 ### Nice-to-have
 

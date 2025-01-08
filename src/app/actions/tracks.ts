@@ -62,7 +62,6 @@ export const parseQrCodeFromFormData = async (formData: FormData): Promise<strin
   if (!file) {
     throw new Error("Missing file in form data");
   }
-  console.log("parseQrCodeFromFormData fileType", (file as File).type);
   if (file && isCorrectImageType(file)) {
     const arrBuf = await file.arrayBuffer();
     const im = await Jimp.read(arrBuf);
