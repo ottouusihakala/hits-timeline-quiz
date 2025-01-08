@@ -10,6 +10,13 @@ interface Properties {
 const SpotifyUrlRedirectTimer = ({ spotifyUrlPromise }: Properties) => {
   const spotifyUrl = use(spotifyUrlPromise);
 
+  function onTimeout() {
+    'use client'
+    if (spotifyUrl) {
+      window.location.replace(decodeURI(spotifyUrl));
+    }
+  }
+
   if (!spotifyUrl) {
     return (
       <span>Timer, no Spotify ID</span>
@@ -19,7 +26,7 @@ const SpotifyUrlRedirectTimer = ({ spotifyUrlPromise }: Properties) => {
   return (
     <div>
       <span>Timer, spotify ID: {spotifyUrl}</span>
-      <Timer onTimeout={() => console.log("Test timer countdown completion")} duration={{ seconds: 10 }} />
+      <Timer onTimeout={onTimeout} duration={{ seconds: 3 }} />
     </div>
   );
 }
