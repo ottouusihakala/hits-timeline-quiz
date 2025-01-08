@@ -34,6 +34,7 @@ python generate-cards.py
 ### High Priority
 
 * Generate "cards", QR code on one side and song info on the other side
+  * Fit cards on A4 sheets (300 ppi)
 * QR code leads to a page in the app, that has a countdown, which redirects or switches to Spotify once countdown runs out
 
 ### Nice-to-have
