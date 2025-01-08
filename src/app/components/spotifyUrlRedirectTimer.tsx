@@ -13,7 +13,7 @@ const SpotifyUrlRedirectTimer = ({ spotifyUrlPromise }: Properties) => {
   function onTimeout() {
     'use client'
     if (spotifyUrl) {
-      window.location.replace(decodeURI(spotifyUrl));
+      window.open(spotifyUrl, "_blank");
     }
   }
 
@@ -25,7 +25,7 @@ const SpotifyUrlRedirectTimer = ({ spotifyUrlPromise }: Properties) => {
 
   return (
     <div>
-      <span>Timer, spotify ID: {spotifyUrl}</span>
+      <span>Timer, spotify URL: {spotifyUrl}</span>
       <Timer onTimeout={onTimeout} duration={{ seconds: 3 }} />
     </div>
   );

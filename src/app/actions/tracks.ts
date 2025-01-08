@@ -1,7 +1,6 @@
 'use server'
 
 import { Jimp } from "jimp";
-
 import spotifySession from "../spotifySession";
 import jsQR from "jsqr";
 import { redirect } from "next/navigation";
@@ -51,17 +50,19 @@ export const getTracksFromHitsterPlaylist = async (): Promise<Track[]> => {
   return tracks;
 }
 
+const PERMITTED_FILE_TYPES = ["image/png", "image/jpeg"];
+
 const isCorrectImageType = (formEntry: FormDataEntryValue): formEntry is File => {
   const fileType = (formEntry as File).type;
-  return fileType === "image/png";
+  return PERMITTED_FILE_TYPES.includes(fileType);
 }
 
 export const parseQrCodeFromFormData = async (formData: FormData): Promise<string> => {
-  const file = formData.get('qrCode');
-  console.log('submitForm file', file);
+  const file = formData.get('qrCode');  
   if (!file) {
     throw new Error("Missing file in form data");
   }
+  console.log("parseQrCodeFromFormData fileType", (file as File).type);
   if (file && isCorrectImageType(file)) {
     const arrBuf = await file.arrayBuffer();
     const im = await Jimp.read(arrBuf);
@@ -70,7 +71,6 @@ export const parseQrCodeFromFormData = async (formData: FormData): Promise<strin
     if (!qrCode) {
       throw new Error("No QR code found in image file")
     }
-    console.log('submitForm qrCode', qrCode);
     return qrCode.data
   }
   throw new Error("File is of incorrect type");
