@@ -1,0 +1,29 @@
+# Docker
+Dockerfile
+.dockerignore
+docker
+
+# Git
+.git
+
+# JS, TS, npm, etc
+node_modules
+npm-debug.log
+
+# Next.js
+.next
+
+# Python
+bin
+lib
+include
+*.py
+requirements.txt
+pyvenv.cfg
+
+# Project specific
+README.md
+.editorconfig
+CooperHewitt-Bold.otf
+test-card-image.png
+tracks.json

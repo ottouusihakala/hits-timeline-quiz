@@ -1,0 +1,8 @@
+services:
+  hits-timeline-quiz-dev:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    image: hits-timeline-quiz:dev
+    ports:
+      - "3000:3000"
