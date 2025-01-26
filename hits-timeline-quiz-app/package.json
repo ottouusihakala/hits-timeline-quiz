@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.734.0",
     "date-fns": "^4.1.0",
     "jimp": "^1.6.0",
     "jsqr": "^1.4.0",
