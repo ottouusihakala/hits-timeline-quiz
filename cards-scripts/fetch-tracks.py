@@ -14,15 +14,6 @@ FILTR_00S_HITS_PLAYLIST_ID = "1U3x51O0LQ4TtaD5CgxuGL"
 # Has 538 tracks (2024-12-27)
 BANGERS_2010S_PLAYLIST_ID = "357fWKFTiDhpt9C69CMG4q"
 
-playlist_ids = [
-    FILTR_SWE_60S_HITS_PLAYLIST_ID, 
-    FILTR_US_70S_HITS_TOP_100_PLAYLIST_ID, 
-    FILTR_US_80S_HITS_TOP_100_PLAYLIST_ID, 
-    FILTR_US_90S_HITS_TOP_100_PLAYLIST_ID,
-    FILTR_00S_HITS_PLAYLIST_ID,
-    BANGERS_2010S_PLAYLIST_ID
-]
-
 playlists_intended_decade = [
     { "id": FILTR_SWE_60S_HITS_PLAYLIST_ID, "decade": { "start": 1960, "end": 1970 } },
     { "id": FILTR_US_70S_HITS_TOP_100_PLAYLIST_ID, "decade": { "start": 1970, "end": 1980 } },
@@ -31,8 +22,6 @@ playlists_intended_decade = [
     { "id": FILTR_00S_HITS_PLAYLIST_ID, "decade": { "start": 2000, "end": 2010 } },
     { "id": BANGERS_2010S_PLAYLIST_ID, "decade": { "start": 2010, "end": 2020 } }
 ]
-
-TRACK_MAX_COUNT_PER_PLAYLIST = 100
 
 # Limiting filter for fields, we don't need all the data from the Spotify API
 fields_filter = "items(id,track(name,album(name,release_date,release_date_precision),artists(name),external_urls(spotify),external_ids(isrc))),total"
@@ -69,10 +58,7 @@ def get_playlist_tracks(playlist_id, auth_token):
     tracks_json = get_playlist_tracks_request(playlist_id, auth_token)
     tracks_amount = tracks_json.get("total")
     tracks = tracks_json.get("items")
-    # Limit amount of tracks, if there are more than 100 tracks in the playlist
-    if tracks_amount > TRACK_MAX_COUNT_PER_PLAYLIST:
-        tracks = tracks[0:TRACK_MAX_COUNT_PER_PLAYLIST]
-
+    
     return tracks
 
 def get_tracks_by_isrc(isrc, auth_token):
