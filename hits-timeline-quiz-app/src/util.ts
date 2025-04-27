@@ -1,6 +1,11 @@
-export const getRandomInt = (min: number, max: number) => {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+import { errorUrl } from "./app/constants";
+
+export function generateRandomString(length: number) {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
-  
+
+export function getErrorUrl(error: string | null) {
+  return `${errorUrl}?error=${error}`
+}

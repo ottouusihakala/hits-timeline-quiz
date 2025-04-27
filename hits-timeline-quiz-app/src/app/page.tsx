@@ -2,6 +2,7 @@ import Form from "next/form";
 import styles from "./page.module.css";
 import { openTrack } from "./actions/tracks";
 import SpotifyUrlRedirectTimer from "./components/spotifyUrlRedirectTimer";
+import { checkCookie } from "./actions/auth";
 
 interface Properties {
   searchParams: Promise<{ 
@@ -11,6 +12,7 @@ interface Properties {
 }
 
 export default async function Home({ searchParams }: Properties) {
+  await checkCookie();
   const spotifyUrl = searchParams.then((sp) => sp.spotifyUrl)
 
   return (
