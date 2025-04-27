@@ -1,4 +1,5 @@
 import { homeUrl, redirectUrl, spotifyTokenUrl } from '@/app/constants';
+import { encryptSession } from '@/app/lib/auth';
 import { Session } from '@/app/types';
 import { getErrorUrl } from '@/util';
 import { cookies } from 'next/headers';
@@ -66,8 +67,7 @@ export async function GET(request: NextRequest) {
       }
       const session = spotifyAccessTokenToSession(authResBody as SpotifyAccessTokenSuccess);
       const cookieStore = await cookies();
-      // TODO: encrypt session object string here, needs secret in env variables
-      const sessionCookieValue = Buffer.from(JSON.stringify(session)).toString('base64');
+      const sessionCookieValue = await encryptSession(session);
       cookieStore.set('token', sessionCookieValue);
       const response = NextResponse.redirect(homeUrl);
       response.cookies.set('token', sessionCookieValue);

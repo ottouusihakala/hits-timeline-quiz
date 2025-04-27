@@ -6,6 +6,7 @@ import { redirectUrl, spotifyAuthScope, spotifyAuthUrl } from '@/app/constants';
 import { generateRandomString, getErrorUrl } from '@/util';
 import { Session } from '@/app/types';
 import { InvalidTokenError } from '../invalidTokenError';
+import { decryptSession } from '../lib/auth';
 
 function redirectToSpotify() {
   const state = generateRandomString(16);
@@ -32,7 +33,8 @@ export async function checkCookie() {
   }
 
   try {
-    const session = JSON.parse(Buffer.from(tokenCookie?.value as string, 'base64').toString('utf-8')) as Session;
+    const decryptedSession = await decryptSession(tokenCookie?.value as string);
+    const session = JSON.parse(decryptedSession) as Session;
     if (!session.accessToken) {
       throw new InvalidTokenError('Spotify Access Token is invalid, missing accessToken');
     }
