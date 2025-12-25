@@ -55,7 +55,7 @@ const createCardFront = async (spotifyUrl: string, backgroundSpecs: sharp.Create
 
   const cardFront = background.composite([{ input: qrCode }]);
 
-  return cardFront.png().toFile('output.png');
+  return cardFront;
 }
 
 const getTextSvg = (text: string, width: number, height: number, fontSize: number) => {
@@ -95,7 +95,7 @@ const createCardBack = async (track: Track, backgroundSpecs: sharp.Create) => {
     },
   ]);
 
-  return cardBackComposed.png().toFile('cardBackOutput.png');
+  return cardBackComposed;
 }
 
 const colors = {
@@ -114,20 +114,61 @@ const getBackgroundStyle = (height: number, width: number, color: sharp.Colour):
   return cardFrontBackground;
 }
 
+const getCardSides = async (track: Track, height: number, width: number) => {
+  const cardFrontBackground: sharp.Create = getBackgroundStyle(height, width, colors.BLACK)
+  const { data: front } = await createCardFront(track.spotifyUrl, cardFrontBackground)
+    .then((sharpImg) => sharpImg.png().toBuffer({ resolveWithObject: true }));
+  const cardBackBackground: sharp.Create = getBackgroundStyle(height, width, colors.WHITE)
+  const { data: back } = await createCardBack(track, cardBackBackground)
+    .then((sharpImg) => sharpImg.png().toBuffer({ resolveWithObject: true }));
+
+  return { front, back };
+}
+
+const composeCard = (sides: { front: Buffer<ArrayBufferLike>, back: Buffer<ArrayBufferLike> }, height: number, width: number) => {
+  const { front, back } = sides;
+  const cardBackground = sharp({
+    create: {
+      height,
+      width: width * 2,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  });
+
+  const card = cardBackground.composite([
+    {
+      input: front,
+      top: 0,
+      left: 0,
+    },
+    {
+      input: back,
+      top: 0,
+      left: width,
+    },
+  ]);
+
+  return card;
+}
+
+const writeCard = (card: sharp.Sharp, index: number) => {
+  return card.png().toFile(`output${index}.png`);
+}
+
 const main = async () => {
   try {
     const filePath = new URL('../tracks.yaml', import.meta.url);
     const tracks = await parseTracks(filePath);
-    const firstTrack = tracks[0];
-    console.log('firstTrack', firstTrack);
-    if (firstTrack) {
+
+    tracks.map(async (track, index) => {
       const height = 900;
       const width = 600;
-      const cardFrontBackground: sharp.Create = getBackgroundStyle(height, width, colors.BLACK)
-      await createCardFront(firstTrack.spotifyUrl, cardFrontBackground);
-      const cardBackBackground: sharp.Create = getBackgroundStyle(height, width, colors.WHITE)
-      await createCardBack(firstTrack, cardBackBackground);
-    }
+      const sides = await getCardSides(track, height, width);
+      const card = composeCard(sides, height, width);
+
+      await writeCard(card, index);
+    });
   } catch (err) {
     console.error(err);
   }
