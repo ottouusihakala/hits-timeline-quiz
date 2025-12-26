@@ -1,34 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { YAML } from 'bun';
-import * as z from 'zod';
 import sharp from 'sharp';
 import QrCode from 'qrcode';
-
-const CARD_WIDTH = 600;
-const CARD_HEIGHT = 900;
-
-// const stringToDate = z.codec(z.iso.date(), z.date(), {
-//   decode: (isoDate: string) => new Date(isoDate),
-//   encode: (date) => date.toISOString(),
-// });
-
-const trackSchema = z.object({
-  name: z.string(),
-  artist: z.string(),
-  releaseDate: z.iso.date(),
-  spotifyUrl: z.url(),
-});
-
-const trackFileSchema = z.array(trackSchema).nonempty();
-
-type Track = z.infer<typeof trackSchema>;
+import { trackFileSchema, type Track } from './schema';
 
 const parseTracks = async (filePath: URL): Promise<Track[]> => {
   // const filePath = new URL('../tracks.yaml', import.meta.url);
   const contents = await readFile(filePath, { encoding: 'utf8' });
-  console.log(contents);
   const yaml = YAML.parse(contents);
-  console.log(yaml);
   const tracks: Track[] = trackFileSchema.parse(yaml);
   return tracks;
 }
