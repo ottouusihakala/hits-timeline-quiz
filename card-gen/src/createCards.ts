@@ -135,10 +135,9 @@ const writeCard = (card: sharp.Sharp, index: number) => {
   return card.png().toFile(`output${index}.png`);
 }
 
-const main = async () => {
+export const createCards = async (tracksYamlFilePath: URL) => {
   try {
-    const filePath = new URL('../tracks.yaml', import.meta.url);
-    const tracks = await parseTracks(filePath);
+    const tracks = await parseTracks(tracksYamlFilePath);
 
     tracks.map(async (track, index) => {
       const height = 900;
@@ -152,5 +151,3 @@ const main = async () => {
     console.error(err);
   }
 }
-
-await main();

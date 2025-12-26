@@ -124,14 +124,8 @@ const writeTracksToYaml = (tracks: Track[]) => {
   return Bun.write('playlistToFile.yaml', asYaml);
 }
 
-const main = async () => {
+export const spotifyPlaylistTracksToYaml = async (playlistId: string) => {
   try {
-    if (process.argv.length < 3) {
-      throw new Error('Provided no arguments, missing required spotify playlist url');
-    }
-
-    const firstArg = process.argv.at(2);
-    const playlistId = z.string().parse(firstArg);
     const authToken = await getAuthToken();
     const playlist = await getPlaylist(playlistId, authToken);
     const tracks = transformTracks(playlist);
@@ -140,5 +134,3 @@ const main = async () => {
     console.error('Failed create YAML from Spotify playlist', err);
   }
 }
-
-await main();
