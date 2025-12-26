@@ -1,10 +1,11 @@
 {
   "name": "card-gen",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run ./src/index.ts"
   },
+  "module": "src/index.js",
   "author": "",
   "license": "MIT",
   "description": "",
@@ -15,6 +16,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "commander": "^14.0.2",
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
     "zod": "^4.2.1"
