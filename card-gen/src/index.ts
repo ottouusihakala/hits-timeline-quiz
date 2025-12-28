@@ -12,7 +12,6 @@ program
   .command('createCards').description('Create card image files from given YAML file')
   .argument('<inputFile>', 'YAML file with track data', (inputFileValue) => yamlFileNameSchema.parse(inputFileValue))
   .action(async (inputFileArg) => {
-    console.log('inputFileArg', inputFileArg)
     const inputFileUrl = new URL(inputFileArg, import.meta.url); 
     await createCards(inputFileUrl);
   });
