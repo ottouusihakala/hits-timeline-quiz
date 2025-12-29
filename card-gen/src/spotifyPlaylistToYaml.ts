@@ -118,27 +118,19 @@ const transformTracks = (playlist: SpotifyPlaylist): Track[] => {
   })
 }
 
-const writeTracksToYaml = (tracks: Track[]) => {
+const writeTracksToYaml = (tracks: Track[], outputFile: Bun.PathLike) => {
   const space = 2;
   const asYaml = YAML.stringify(tracks, null, space);
-  return Bun.write('playlistToFile.yaml', asYaml);
+  return Bun.write(outputFile, asYaml);
 }
 
-const main = async () => {
+export const spotifyPlaylistTracksToYaml = async (playlistId: string, outputFile: Bun.PathLike) => {
   try {
-    if (process.argv.length < 3) {
-      throw new Error('Provided no arguments, missing required spotify playlist url');
-    }
-
-    const firstArg = process.argv.at(2);
-    const playlistId = z.string().parse(firstArg);
     const authToken = await getAuthToken();
     const playlist = await getPlaylist(playlistId, authToken);
     const tracks = transformTracks(playlist);
-    await writeTracksToYaml(tracks);
+    await writeTracksToYaml(tracks, outputFile);
   } catch (err: unknown) {
     console.error('Failed create YAML from Spotify playlist', err);
   }
 }
-
-await main();
