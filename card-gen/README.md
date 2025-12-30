@@ -69,3 +69,39 @@ bun run ./src/index.ts getTracks 49PAThhKRCCTXeydvq9uAp 80s_tracks.yaml
 ```
 
 Now you should have a file called `80s_tracks.yaml`. This can be given to the `createCards` command to create cards out of it.
+
+### Built script
+
+#### Prerequisites
+
+Install [bun](https://bun.com/), if not installed yet.
+
+#### Usage
+
+Same as with the unbuilt project, but requires installation of sharp beforehand. Install sharp with
+
+```bash
+# IN SAME DIRECTORY AS THE index.js FILE!!
+
+# On linux
+npm install --os=linux --cpu=x64 sharp
+
+# Or on windows
+npm install --os=windows --cpu=x64 sharp
+
+# Or on macos (with M-processors)
+npm install --os=macos --cpu=arm64 sharp
+```
+
+After that, you can run `bun run index.js [command] <arguments>`.
+
+## Building
+
+Run
+
+```bash
+bun run build
+```
+
+which results in `dist/index.js`.
+

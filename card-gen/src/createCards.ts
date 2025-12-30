@@ -6,7 +6,6 @@ import { trackFileSchema, type Track } from './schema';
 import type { PathLike } from 'node:fs';
 
 const parseTracks = async (filePath: PathLike): Promise<Track[]> => {
-  // const filePath = new URL('../tracks.yaml', import.meta.url);
   const contents = await readFile(filePath, { encoding: 'utf8' });
   const yaml = YAML.parse(contents);
   const tracks: Track[] = trackFileSchema.parse(yaml);

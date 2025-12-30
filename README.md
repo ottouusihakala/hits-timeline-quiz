@@ -22,17 +22,21 @@ Not implemented yet.
 
 * Consider creating a mobile app for the QR code redirect
   * Distribution of app can be an issue, application package distribution requires approval from application store front or technical know-how of installing unsigned packages
+* Might have to think about moving cardgen to be a webapp, since then I won't have to provide the Spotify client ID and secret to users using `cardgen getTracks` command
 
 ### High Priority
 
-* Validate track data
+* cardgen: building a single executable with libraries
+* cardgen: how to provide environment variables to the single-file script (without .env file)
+* cardgen: Validate track data
   * Ex. the playlist user used to create track data (for card generation) is supposed to only contain 80s music
     * Mark all invalid release dates? Maybe preferable over just filtering the invalid ones out.
   * A separate command would probably be best, to keep all tools separate (and to maintain clean separation of logic)
-* Figure out best way to print cards
+* cardgen: Figure out best way to print cards
   * One file with all, multiple files with multiple cards, or multiple files with single card per file?
-* Test QR code parsed URL redirect to Spotify
+* webapp: Test QR code parsed URL redirect to Spotify
   * On mobile (most likely requires authentication to prevent unwanted users to site/webapp)
+* cardgen: logging, to better tell users what is going on when running the commands
 
 ### Nice-to-have
 
