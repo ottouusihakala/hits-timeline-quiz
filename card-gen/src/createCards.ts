@@ -3,8 +3,9 @@ import { YAML } from 'bun';
 import sharp from 'sharp';
 import QrCode from 'qrcode';
 import { trackFileSchema, type Track } from './schema';
+import type { PathLike } from 'node:fs';
 
-const parseTracks = async (filePath: URL): Promise<Track[]> => {
+const parseTracks = async (filePath: PathLike): Promise<Track[]> => {
   // const filePath = new URL('../tracks.yaml', import.meta.url);
   const contents = await readFile(filePath, { encoding: 'utf8' });
   const yaml = YAML.parse(contents);
@@ -135,7 +136,7 @@ const writeCard = (card: sharp.Sharp, index: number) => {
   return card.png().toFile(`output${index}.png`);
 }
 
-export const createCards = async (tracksYamlFilePath: URL) => {
+export const createCards = async (tracksYamlFilePath: PathLike) => {
   try {
     const tracks = await parseTracks(tracksYamlFilePath);
 
