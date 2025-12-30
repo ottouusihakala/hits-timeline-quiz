@@ -32,7 +32,7 @@ bun run ./src/index.ts [YAML file]
 with YAML file being for instance the `tracks.yaml` file, ex.
 
 ```bash
-bun run ./src/index.ts createCards ../tracks.yaml # has to refer one directory upwards, since index.ts is in "src" directory
+bun run ./src/index.ts createCards tracks.yaml
 ```
 
 This will create a bunch of files with names in format `output[number].png`, with the number being the index of the track. Each PNG file contains both the front and back of a card.
